@@ -2,7 +2,7 @@ import winreg
 import os
 import ctypes
 
-def is_admin():
+def verificar_admin():
     """Verifica se o script está sendo executado como administrador."""
     try:
         return ctypes.windll.shell32.IsUserAnAdmin()
@@ -40,13 +40,13 @@ def reiniciar_servico_lanman():
         print(" Não foi possível reiniciar o serviço. Tente reiniciar manualmente.")
 
 def main():
-    if not is_admin():
+    if not verificar_admin():
         print(" Este script precisa ser executado como administrador.")
         return
     
     os.system("cls")
     print("\n" + "="*50)
-    print("=== Mudar Descrição do Computador - v1.1 ===")
+    print("=== Mudar Descrição do Computador - v1.1.1 ===")
     print("="*50)
 
     descricao = input("\n Qual nome você deseja colocar como descrição do computador? ").strip()
@@ -66,5 +66,5 @@ if __name__ == "__main__":
     main()
 
 
-""" Version: 1.1.0
+""" Version: 1.1.1
 Creator: João Malfatti """
