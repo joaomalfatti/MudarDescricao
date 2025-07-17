@@ -11,15 +11,8 @@ def verificar_admin():
 
 def alterar_descricao_local(nova_descricao):
     try:
-        chave_registro = winreg.OpenKey(
-            winreg.HKEY_LOCAL_MACHINE,
-            r"SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters",
-            0,
-            winreg.KEY_SET_VALUE
-        )
-
-        winreg.SetValueEx(chave_registro, "srvcomment", 0, winreg.REG_SZ, nova_descricao)
-        winreg.CloseKey(chave_registro)
+        caminho = r"SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters"
+        with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, caminho, 0, winreg.KEY_SET_VALUE) as chave: winreg.SetValueEx(chave, "srvcomment", 0, winreg.REG_SZ, nova_descricao)
 
         print(f"\n Descrição alterada com sucesso para: {nova_descricao}")
         return True
@@ -32,12 +25,11 @@ def alterar_descricao_local(nova_descricao):
     return False
 
 def reiniciar_servico_lanman():
-    print("\n Reiniciando serviço 'lanmanserver'...")
-    resultado = os.system(" net stop lanmanserver && net start lanmanserver")
-    if resultado == 0:
-        print(" Serviço reiniciado com sucesso.")
+
+    if os.system("net stop lanmanserver") == 0 and os.system("net start lanmanserver") == 0:
+        print("\n Serviço reiniciado")
     else:
-        print(" Não foi possível reiniciar o serviço. Tente reiniciar manualmente.")
+        print("\n Reinicie manualmente depois")
 
 def main():
     if not verificar_admin():
@@ -46,16 +38,19 @@ def main():
     
     os.system("cls")
     print("\n" + "="*50)
-    print("=== Mudar Descrição do Computador - v1.1.1 ===")
+    print("=== Mudar Descrição do Computador - v1.2.0 ===")
     print("="*50)
 
-    descricao = input("\n Qual nome você deseja colocar como descrição do computador? ").strip()
+    nova_desc = input("\n Digite a nova descrição: ").strip()
 
-    if not descricao:
+    if not nova_desc:
         print(" A descrição não pode estar vazia.")
         return
+    
+    if len(nova_desc) > 256:
+        print("\n Descrição muito longa (Máximo 256 caracteres) ")
 
-    if alterar_descricao_local(descricao):
+    if alterar_descricao_local(nova_desc):
         resposta = input("\n Deseja reiniciar o serviço 'lanmanserver' agora? (s/n): ").lower()
         if resposta == 's':
             reiniciar_servico_lanman()
@@ -66,5 +61,5 @@ if __name__ == "__main__":
     main()
 
 
-""" Version: 1.1.1
+""" Version: 1.2.0
 Creator: João Malfatti """
