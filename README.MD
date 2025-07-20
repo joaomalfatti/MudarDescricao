@@ -1,6 +1,7 @@
 
 
 ---
+![Em Validação](https://img.shields.io/badge/Status-Em_Validação-blue?logo=azurepipelines)
 
 ### Olá, sou João Malfatti
 
