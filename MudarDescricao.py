@@ -36,30 +36,40 @@ def main():
         print(" Este script precisa ser executado como administrador.")
         return
     
-    os.system("cls")
-    print("\n" + "="*50)
-    print("=== Mudar Descrição do Computador - v1.2.0 ===")
-    print("="*50)
+    while True:
+        os.system("cls")
+        print("\n" + "="*50)
+        print("=== Mudar Descrição do Computador - v1.2.1 ===")
+        print("="*50)
 
-    nova_desc = input("\n Digite a nova descrição: ").strip()
+        print("\n Digite a nova descrição ou '0' para voltar ao menu anterior:")
+        nova_desc = input("> ").strip()
 
-    if not nova_desc:
-        print(" A descrição não pode estar vazia.")
-        return
-    
-    if len(nova_desc) > 256:
-        print("\n Descrição muito longa (Máximo 256 caracteres) ")
-
-    if alterar_descricao_local(nova_desc):
-        resposta = input("\n Deseja reiniciar o serviço 'lanmanserver' agora? (s/n): ").lower()
-        if resposta == 's':
-            reiniciar_servico_lanman()
-        else:
-            print(" Você pode reiniciar manualmente o serviço mais tarde.")
+        if nova_desc == '0':
+            return  # Retorna ao menu anterior
+        
+        if not nova_desc:
+            print(" A descrição não pode estar vazia.")
+            input("\nPressione Enter para continuar...")
+            continue
+        
+        if len(nova_desc) > 256:
+            print("\n Descrição muito longa (Máximo 256 caracteres) ")
+            input("\nPressione Enter para continuar...")
+            continue
+        
+        if alterar_descricao_local(nova_desc):
+            resposta = input("\n Deseja reiniciar o serviço 'lanmanserver' agora? (s/n): ").lower()
+            if resposta == 's':
+                reiniciar_servico_lanman()
+            else:
+                print(" Você pode reiniciar manualmente o serviço mais tarde.")
+        
+        input("\nPressione Enter para continuar...")
 
 if __name__ == "__main__":
     main()
 
 
-""" Version: 1.2.0
+""" Version: 1.2.1
 Creator: João Malfatti """
